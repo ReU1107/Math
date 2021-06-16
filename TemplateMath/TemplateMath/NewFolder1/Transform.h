@@ -1,13 +1,16 @@
 #pragma once
 #include "Vector.h"
 #include "Quaternion.h"
+#include "Matrix.h"
 
 /*
 行列の操作は別にわたす
 あくまでデータ構造のようなふるまいをする
+
+データは全てローカル座標系
 */
 
-namespace Engine
+namespace Alpha
 {
 	class Transform
 	{
@@ -35,7 +38,6 @@ namespace Engine
 		// 拡大率取得
 		Vector3 GetScale() const;
 
-		
 	};
 
 }

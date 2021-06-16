@@ -1,11 +1,11 @@
 #include "Transform.h"
 
-namespace Engine
+namespace Alpha
 {
 	Transform::Transform()
 		: m_location()
-		, m_rotation(Quaternion::Identity)
-		, m_scale(Vector3::One)
+		, m_rotation(Quaternion::Identity())
+		, m_scale(Vector3::One())
 	{
 	}
 

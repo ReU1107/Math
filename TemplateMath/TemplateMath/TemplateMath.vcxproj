@@ -143,37 +143,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="NewFolder1\AABB.cpp" />
-    <ClCompile Include="NewFolder1\Capsule.cpp" />
-    <ClCompile Include="NewFolder1\Collision.cpp" />
-    <ClCompile Include="NewFolder1\LineSegment.cpp" />
+    <ClCompile Include="NewFolder1\MathLibrary.cpp" />
     <ClCompile Include="NewFolder1\MathUtility.cpp" />
-    <ClCompile Include="NewFolder1\PhysicsMaterial.cpp" />
-    <ClCompile Include="NewFolder1\Plane.cpp" />
     <ClCompile Include="NewFolder1\Quaternion.cpp" />
-    <ClCompile Include="NewFolder1\Ray.cpp" />
-    <ClCompile Include="NewFolder1\Sphere.cpp" />
     <ClCompile Include="NewFolder1\Transform.cpp" />
     <ClCompile Include="TemplateMath.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="NewFolder1\AABB.h" />
-    <ClInclude Include="NewFolder1\Capsule.h" />
-    <ClInclude Include="NewFolder1\Collision.h" />
-    <ClInclude Include="NewFolder1\LineSegment.h" />
-    <ClInclude Include="NewFolder1\Math.h" />
+    <ClInclude Include="NewFolder1\MathLibrary.h" />
+    <ClInclude Include="NewFolder1\MathLibraryImpl.h" />
     <ClInclude Include="NewFolder1\MathUtility.h" />
     <ClInclude Include="NewFolder1\Matrix.h" />
-    <ClInclude Include="NewFolder1\OBB.h" />
-    <ClInclude Include="NewFolder1\PhysicsMaterial.h" />
-    <ClInclude Include="NewFolder1\Plane.h" />
+    <ClInclude Include="NewFolder1\MatrixImpl.h" />
     <ClInclude Include="NewFolder1\Quaternion.h" />
-    <ClInclude Include="NewFolder1\Ray.h" />
-    <ClInclude Include="NewFolder1\Sphere.h" />
+    <ClInclude Include="NewFolder1\QuaternionImpl.h" />
     <ClInclude Include="NewFolder1\Transform.h" />
-    <ClInclude Include="NewFolder1\Type.h" />
     <ClInclude Include="NewFolder1\Utility.h" />
     <ClInclude Include="NewFolder1\Vector.h" />
+    <ClInclude Include="NewFolder1\VectorImpl.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="NewFolder1\testshader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

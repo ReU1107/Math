@@ -1,7 +1,35 @@
 #pragma once
 #include "Vector.h"
+#include <initializer_list>
+/*
 
-namespace Engine
+Matrix4x4(0,0,0,0,
+          0,0,0,0,
+		  0,0,0,0,
+		  0,0,0,0);
+ができないようになっている
+
+↑のようにやりたいときは
+Matrix4x4(Vector4(0,0,0,0),
+          Vector4(0,0,0,0),
+		  Vector4(0,0,0,0),
+		  Vector4(0,0,0,0));
+と記述しないといけない。
+
+記述がめんどくさくなるが
+見た目としてはわかりやすいと思う。
+
+Matrix4x4(1);
+で
+(1,0,0,0)
+(0,1,0,0)
+(0,0,1,0)
+(0,0,0,1)
+になる、
+*/
+
+
+namespace Alpha
 {
 	/*
 	Row:行
@@ -18,103 +46,62 @@ namespace Engine
 			Type e[Row * Column];
 		};
 	public:
-		static const TMatrix<Type, Row, Column> Identity;
-		static const TMatrix<Type, Row, Column> Zero;
+		static constexpr TMatrix<Type, Row, Column> Zero();
+		static constexpr TMatrix<Type, Row, Column> Identity();
 
-		TMatrix()
-			: v()
-		{
-		}
-
+		TMatrix();
 		// 対角線上に値を代入
-		TMatrix(const Type scalar)
-			: v()
-		{
-			for (uint32_t i = 0; i < Row; i++)
-			{
-				v[i][i] = scalar;
-			}
-		}
+		TMatrix(const Type scalar);
+
+		template<uint32_t R,uint32_t C> 
+		TMatrix(const TMatrix<Type, R, C>& other);
+
+		template<uint32_t C = Column>
+		TMatrix(const TVector<Type, C>& row0);
+
+		template<uint32_t C = Column>
+		TMatrix(const TVector<Type, C>& row0, const TVector<Type, C>& row1);
+
+		template<uint32_t C = Column>
+		TMatrix(const TVector<Type, C>& row0, const TVector<Type, C>& row1, const TVector<Type, C>& row2);
+
+		template<uint32_t C = Column>
+		TMatrix(const TVector<Type, C>& row0, const TVector<Type, C>& row1, const TVector<Type, C>& row2, const TVector<Type, C>& row3);
 		
-		template<class... Args>
-		TMatrix(const Args... args)
-			: v()
-		{
-			constexpr auto argsCount = sizeof...(Args);
-			static_assert(Row >= argsCount, "Count is less than Args(TMatrx)");
+		inline TMatrix& operator*=(const TMatrix& other);
 
-			Assign(G(args)...);
-		}
+		inline TVector<Type, Column>& operator[](const uint32_t index);
 
-		inline TMatrix operator*(const TMatrix& other) const
-		{
-			TMatrix mat = TMatrix::Zero;
+		inline TVector<Type, Column> At(const uint32_t index) const;
 
-#ifdef _OPENMP
-#pragma omp parallel for
-#endif
-			for (int32_t i = 0; i < Row; i++)
-			{
-				for (int32_t j = 0; j < Column; j++)
-				{
-					for (int32_t k = 0; k < Row; k++)
-					{
-						mat[i][j] += v[i].At(j) * other.v[k].At(j);
-					}
-				}
-			}
-			return mat;
-		}
+		inline TVector<Type, Column>& _1();
+		inline TVector<Type, Column>& _2();
+		inline TVector<Type, Column>& _3();
+		inline TVector<Type, Column>& _4();
 
-		inline TMatrix& operator*=(const TMatrix& other)
-		{
-#ifdef _OPENMP
-#pragma omp parallel for
-#endif
-			for (int32_t i = 0; i < Row; i++)
-			{
-				for (int32_t j = 0; j < Column; j++)
-				{
-					for (int32_t k = 0; k < Row; k++)
-					{
-						v[i][j] *= other.v[k].At(j);
-					}
-				}
-			}
-			return *this;
-		}
+		inline TVector<Type, 1>& _11();
+		inline TVector<Type, 1>& _12();
+		inline TVector<Type, 1>& _13();
+		inline TVector<Type, 1>& _14();
+		
+		inline TVector<Type, 1>& _21();
+		inline TVector<Type, 1>& _22();
+		inline TVector<Type, 1>& _23();
+		inline TVector<Type, 1>& _24();
+		
+		inline TVector<Type, 1>& _31();
+		inline TVector<Type, 1>& _32();
+		inline TVector<Type, 1>& _33();
+		inline TVector<Type, 1>& _34();
 
-		inline TVector<Type, Column>& operator[](const uint32_t index)
-		{
-			return v[index];
-		}
-
-		inline TVector<Type, Column> At(const uint32_t index) const
-		{
-			return v[index];
-		}
-
-	private:
-		// パラメーターパック展開関数
-		inline TVector<Type, Column> G(const TVector<Type, Column>& t) { return t; }
-
-		template<class... Args>
-		void Assign(Args const&... args)
-		{
-			int32_t i = 0;
-			for (auto const& value : { args... })
-			{
-				v[i++] = value;
-			}
-		}
-
+		inline TVector<Type, 1>& _41();
+		inline TVector<Type, 1>& _42();
+		inline TVector<Type, 1>& _43();
+		inline TVector<Type, 1>& _44();
 	};
 
 	template<class Type, uint32_t Row, uint32_t Column>
-	const TMatrix<Type, Row, Column> TMatrix<Type, Row, Column>::Identity = TMatrix(1.0f);
-
-	template<class Type, uint32_t Row, uint32_t Column>
-	const TMatrix<Type, Row, Column> TMatrix<Type, Row, Column>::Zero = TMatrix(0.0f);
+	static inline TMatrix<Type, Row, Column> operator*(const TMatrix<Type, Row, Column>& lhs, const TMatrix<Type, Row, Column>& rhs);
 
 	using Matrix2x2 = TMatrix<float, 2, 2>;
 	using Matrix3x3 = TMatrix<float, 3, 3>;
@@ -134,18 +121,6 @@ namespace Engine
 	using float4x3 = Matrix4x3;
 	using float4x4 = Matrix4x4;
 
-	template<uint32_t Row, uint32_t Column>
-	inline Matrix3x3 Cast(const Matrix4x4& mat)
-	{
-		Matrix3x3 m;
-		for (int32_t i = 0; i < Row; i++)
-		{
-			for (int32_t j = 0; j < Column; j++)
-			{
-				m[i][j] = mat.At(i).At(j);
-			}
-		}
-
-		return m;
-	}
 }
+
+#include "MatrixImpl.h"

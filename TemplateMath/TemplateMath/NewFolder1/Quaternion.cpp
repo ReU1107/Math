@@ -1,6 +1,5 @@
 #include "Quaternion.h"
 
-namespace Engine
+namespace Alpha
 {
-	const Quaternion Quaternion::Identity = Quaternion(Vector3::Zero, 1.0f);
 }

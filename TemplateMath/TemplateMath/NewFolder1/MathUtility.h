@@ -1,9 +1,9 @@
 #pragma once
 #include <cstdint>
 
-namespace Engine
+namespace Alpha
 {
-	class Math
+	class MathUtility
 	{
 	public:
 		// 限りなく0に近い値
@@ -42,6 +42,15 @@ namespace Engine
 		// 線形補間
 		static float Lerp(const float lhs, const  float rhs, const  float t);
 
+		// 正規化
+		static float Normalize(const float current, const float left, const float right);
+
+		// ベジェ補間
+		static float BezierCurve(const float s, const float c1, const float c2, const float e, const float t);
+
+		// ベジェ補間(0～1);
+		static float SimpleBezierCurve(const float c1, const float c2, const float t);
+
 		// 累乗
 		static float Pow(const float b, int32_t index);
 
@@ -75,20 +84,20 @@ namespace Engine
 		static T Clamp(const T source, const T min, const T max);
 	};
 
-	template<class T>
-	inline T Math::Max(const T lhs, const T rhs)
+	template<typename T>
+	inline T MathUtility::Max(const T lhs, const T rhs)
 	{
 		return (lhs > rhs) ? lhs : rhs;
 	}
 
-	template<class T>
-	inline T Math::Min(const T lhs, const T rhs)
+	template<typename T>
+	inline T MathUtility::Min(const T lhs, const T rhs)
 	{
 		return (lhs < rhs) ? lhs : rhs;
 	}
 
-	template<class T>
-	inline T Math::Clamp(const T source, const T min, const T max)
+	template<typename T>
+	inline T MathUtility::Clamp(const T source, const T min, const T max)
 	{
 		float destination = source;
 		if (source > max)
